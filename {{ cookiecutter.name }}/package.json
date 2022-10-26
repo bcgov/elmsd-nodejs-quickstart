@@ -1,0 +1,23 @@
+{
+    "name": "@{{ cookiecutter.name }}/root",
+    "private": true,
+    "description": "{{ cookiecutter.description }}",
+    "license": "Apache-2.0",
+    "author": "Sid McLaughlin <sid.mclaughlin@gov.bc.ca>",
+    "workspaces": [
+        "packages/*"
+    ],
+    "scripts": {
+        "changeset": "changeset",
+        "prepare": "husky install",
+        "release": "changeset publish"
+    },
+    "devDependencies": {
+        "@bcgov-elmsd/eslint-config": "^1.0.1",
+        "@changesets/changelog-github": "^0.4.6",
+        "@changesets/cli": "^2.24.4",
+        "husky": "^8.0.1",
+        "lint-staged": "^13.0.3",
+        "typescript": "^4.8.3"
+    }
+}

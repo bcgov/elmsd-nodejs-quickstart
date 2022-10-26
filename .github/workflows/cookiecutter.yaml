@@ -1,0 +1,83 @@
+name: Run cookiecutter on first push
+on: [push]
+jobs:
+    run-cookiecutter:
+        if: ${{ github.repository != 'bcgov/elmsd-nodejs-quickstart' }}
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+              with:
+                  fetch-depth: 0
+                  ref: ${{ github.head_ref }}
+
+            - name: Install cookiecutter
+              run: pip3 install cookiecutter
+
+            - name: Fetch repo details
+              id: fetch-repo-details
+              uses: actions/github-script@v4
+              with:
+                  script: |
+                      const query = `query($owner:String!, $name:String!) {
+                        repository(owner:$owner, name:$name) {
+                          name
+                          owner {
+                            login
+                          }
+                        }
+                      }`
+
+                      const variables = {
+                        owner: context.repo.owner,
+                        name: context.repo.repo
+                      }
+
+                      const result = await github.graphql(query, variables)
+                      console.log(result)
+                      return result
+                      
+            - name: Replace template tags
+              env:
+                  INFO: ${{ steps.fetch-repo-details.outputs.result }}
+              run: |
+                  # Delete this workflow
+                  rm -rf .github
+                  export REPO_NAME=$(echo $INFO | jq -r '.repository.name' )
+                  export GITHUB_OWNER=$(echo $INFO | jq -r '.repository.owner.login')
+                  export GITHUB_DESCRIPTION=$(echo $INFO | jq -r '.repository.description // ""')
+
+                  # Run cookiecutter
+                  cookiecutter gh:bcgov/elmsd-nodejs-quickstart --no-input \
+                    name=$REPO_NAME \
+                    description=$GITHUB_DESCRIPTION \
+                    github_owner=$GITHUB_OWNER
+
+                  # Move generated content to root directory
+                  mv $REPO_NAME/* .
+                  mv $REPO_NAME/.changeset .
+                  mv $REPO_NAME/.husky .
+                  mv $REPO_NAME/.eslintignore .
+                  mv $REPO_NAME/.eslintrc.js .
+                  mv $REPO_NAME/.lintstagedrc.js .
+                  mv $REPO_NAME/.prettierignore .
+                  mv $REPO_NAME/.prettierrc.js .
+
+                  # Remove template directories
+                  rm -r "{{ cookiecutter.name }}"
+                  rmdir $REPO_NAME
+                  rm cookiecutter.json
+            
+            - name: Setup Node.js 16.x
+              uses: actions/setup-node@v2
+              with:
+                node-version: 16.x
+            
+            - name: Install Dependencies
+              run: npm install
+
+            - name: Force push new repo contents
+              uses: stefanzweifel/git-auto-commit-action@v4
+              with:
+                  commit_message: "Initial commit"
+                  push_options: --force

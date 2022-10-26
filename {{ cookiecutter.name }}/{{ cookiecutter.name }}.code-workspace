@@ -1,0 +1,42 @@
+{
+    "extensions": {
+        "recommendations": [
+            "christian-kohler.path-intellisense",
+            "dbaeumer.vscode-eslint",
+            "esbenp.prettier-vscode",
+            "orta.vscode-jest",
+            "vscode-icons-team.vscode-icons"
+        ]
+    },
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "[javascript][javascriptreact][json][jsonc][typescript][typescriptreact]": {
+            "editor.defaultFormatter": "esbenp.prettier-vscode",
+            "editor.tabSize": 4
+        },
+        "editor.codeActionsOnSave": {
+            "source.fixAll": true,
+            "source.organizeImports": true
+        },
+        "editor.formatOnSave": true,
+        "editor.rulers": [150],
+        "files.exclude": {
+            "**/.git": false,
+            "**/.svn": true,
+            "**/.hg": true,
+            "**/CVS": true,
+            "**/.DS_Store": true,
+            "**/Thumbs.db": true
+        },
+        "javascript.format.semicolons": "remove",
+        "javascript.preferences.quoteStyle": "double",
+        "typescript.format.semicolons": "remove",
+        "typescript.preferences.importModuleSpecifier": "project-relative",
+        "typescript.preferences.quoteStyle": "double",
+        "typescript.tsdk": "node_modules/typescript/lib"
+    }
+}
