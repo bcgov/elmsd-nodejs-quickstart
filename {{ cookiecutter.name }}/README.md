@@ -1,8 +1,22 @@
 # {{ cookiecutter.name }}
 
-## Setting up `changeset-bot`
-After creating this repository, configure the `changeset-bot` on your repository.  See [here](https://github.com/apps/changeset-bot) for more information.
 
+## Usage
+
+Add your projects to the `packages` folder.  If the `packages` folder does not already exist, create it.  See below for the expected project structure.
+
+```
+📦 {{ cookiecutter.name }}
+ ┣ ...
+ ┣ 📂 packages
+ ┃ ┣ 📂 project-a
+ ┃ ┗ 📂 project-b
+ ┗ ...
+```
+This monorepo uses npm workspaces.  See [here](https://docs.npmjs.com/cli/v7/using-npm/workspaces) for more information on how to interact with workspaces.
+
+## Setting up `changeset-bot`
+Configure the `changeset-bot` on your GitHub repository.  See [here](https://github.com/apps/changeset-bot) for more information.
 ## License
 
 ```
