@@ -3,6 +3,8 @@
 
 ## Usage
 
+Open the `{{ cookiecutter.name }}.code-workspace` in Visual Studio Code.  This contains all extensions you will need for automatic linting and managing the project.
+
 Add your projects to the `packages` folder.  If the `packages` folder does not already exist, create it.  See below for the expected project structure.
 
 ```
